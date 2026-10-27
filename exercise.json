@@ -1,0 +1,22 @@
+{
+  "key": "bug-fix",
+  "title": "Fix the bug and prove it",
+  "minutes": 25,
+  "chapter": "Chapter 2 \u00b7 Feedback",
+  "writeAllow": [
+    "src/claims.mjs",
+    "tests/student/**"
+  ],
+  "practice": [
+    "bug-fix.practice"
+  ],
+  "needsAI": false,
+  "brief": "A claims-status helper works for the developer account but exposes another user\u2019s claim in one edge case. The existing tests are green.",
+  "acceptance": [
+    "Only an exact authorized owner receives a claim.",
+    "Whitespace is normalized consistently and malformed IDs cannot match.",
+    "The student regression fails on the original and passes on the fix.",
+    "Missing records return null; the input list and records remain unchanged."
+  ],
+  "recipeIndex": 2
+}
