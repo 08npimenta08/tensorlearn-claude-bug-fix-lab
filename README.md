@@ -1,27 +1,30 @@
 # Fix the bug and prove it
 
-A claims-status helper works for the developer account but exposes another user’s claim in one edge case. The existing tests are green.
+A claims-status helper shows a user's insurance claim. The tests are green, but in production viewer `user-4`
+was shown `claim-B`, which belongs to `user-42` (see `docs/contract.md`).
 
-In the reported incident, viewer `user-4` was shown claim `claim-B`, which belongs to `user-42` (see `docs/contract.md`).
+**What you'll practise:** test-first bug fixing with Claude Code: prove the bug with a failing test, fix it,
+and show the same test passes.
 
-**What you'll practise:** test-first bug fixing with Claude Code. Reproduce the bug with a failing regression test *before* changing the code, then fix it and show that the same test now passes.
-
-**In the course slides:** Chapter 2, Lesson 1 (Give Claude a feedback loop): for bug fixes the failing test comes first, then the fix, without editing the test.
+**In the course slides:** Chapter 2, Lesson 1 (Give Claude a feedback loop): for bug fixes the failing test
+comes first, then the fix, without editing the test.
 
 ## Task
 
-1. Read `docs/contract.md` and reproduce the incident.
-2. Add a regression test under `tests/student/` using Node’s test runner. Replace the placeholder in `tests/student/regression.test.mjs`; test files must end in `.test.mjs`.
-3. Run the same test on the original starter code, before you change `src/claims.mjs`, and confirm it fails for the intended reason (`user-4` receives `claim-B`): `node --test tests/student/*.test.mjs`
-4. Fix `src/claims.mjs`, rerun your regression and the baseline, then submit both: `node --test tests/*.test.mjs tests/student/*.test.mjs`
+1. Read `docs/contract.md` and `src/claims.mjs`, and work out how the incident happened. Don't change code yet.
+2. Replace the placeholder in `tests/student/regression.test.mjs` with a test that reproduces the incident.
+3. Run it on the original code and confirm it fails because `user-4` receives `claim-B`:
+   `node --test tests/student/*.test.mjs`
+4. Fix `src/claims.mjs` to follow the whole contract, without changing your test, and run everything:
+   `node --test tests/*.test.mjs tests/student/*.test.mjs`
+5. Check your test protects you: put the original comparison back, see the test fail, then restore your fix.
 
-A good way to work: ask Claude to write the failing test and run it, check the failure yourself, and only then ask for the fix.
+Give Claude one step at a time and read what it reports before moving on.
 
-## Working rules
+## Rules
 
-Edit only `src/claims.mjs` and `tests/student/**`. No dependencies, workflow edits, skipped assertions or test-runner replacements.
-
-The grader runs `getClaim` in an isolated sandbox without Node APIs, so keep it a self-contained pure function: no imports, no `console`. It runs your `tests/student/` tests with only `src/claims.mjs` next to them. Use Node 22.
+- Change only `src/claims.mjs` and `tests/student/` (test files end in `.test.mjs`). Commit both together.
+- The grader runs `getClaim` without Node APIs: no imports and no `console` in `src/claims.mjs`. Use Node 22.
 
 ## Acceptance
 
@@ -32,9 +35,8 @@ The grader runs `getClaim` in an isolated sandbox without Node APIs, so keep it 
 
 ## Done when
 
-- `node --test tests/student/*.test.mjs` failed before your fix and passes after it.
-- `node --test tests/*.test.mjs tests/student/*.test.mjs` passes.
-- Only `src/claims.mjs` and files under `tests/student/` changed.
+- Your test failed before the fix and passes after it, and the full command passes.
+- Only `src/claims.mjs` and `tests/student/` changed.
 
 ## How to submit
 
